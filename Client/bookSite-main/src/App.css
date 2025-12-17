@@ -1,0 +1,29 @@
+/* styles for BannerCard */
+
+#app { height: 100% }
+
+
+.banner #app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner .swiper {
+  width: 240px;
+  height: 320px;
+}
+
+.banner .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+}
+
+input:focus{
+  outline: none;
+}
