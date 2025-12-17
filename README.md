@@ -17,7 +17,7 @@ Tech Stack
  1️⃣ Clone the Repository
 
 ```
-git clone https://github.com/Hamid-Azeem/e-Book.git
+git clone https://github.com/Hamid-Azeem/e-Book-.git
 cd ebook-paradise
 ```
 
