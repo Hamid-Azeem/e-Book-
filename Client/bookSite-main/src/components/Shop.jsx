@@ -166,8 +166,8 @@ function Shop() {
     <div className='min-h-screen bg-gray-50/50 mt-20 pb-20'>
       {/* Header Section */}
       <div className='max-w-7xl mx-auto px-4 lg:px-24 pt-12'>
-        <div className='flex flex-col md:flex-row items-end justify-between mb-10 gap-4'>
-          <div>
+        <div className='flex flex-col md:flex-row items-center md:items-end justify-between mb-10 gap-4 text-center md:text-left'>
+          <div className='w-full'>
             <h2 className='text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight'>
               Discover Books
             </h2>
@@ -297,9 +297,9 @@ function Shop() {
             <p className="text-gray-500 mt-2">Try adjusting your search or category filter.</p>
           </div>
         ) : (
-          <div className='grid gap-8 mb-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          <div className='grid gap-8 mb-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center'>
             {[...booksToDisplay].reverse().map(book => (
-              <Link to={`/books/${book._id}`} key={book._id} className="group h-full">
+              <Link to={`/books/${book._id}`} key={book._id} className="group h-full w-full max-w-sm mx-auto">
                 <article className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                   {/* Image Container with Aspect Ratio */}
                   <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100">
@@ -313,8 +313,8 @@ function Shop() {
                   </div>
 
                   {/* Content */}
-                  <div className='flex-1 flex flex-col p-5'>
-                    <div className="mb-auto">
+                  <div className='flex-1 flex flex-col p-5 text-center md:text-left items-center md:items-start'>
+                    <div className="mb-auto w-full">
                       {book.category && (
                          <span className="inline-block px-2.5 py-0.5 mb-2 text-xs font-semibold tracking-wide text-blue-600 uppercase bg-blue-50 rounded-full">
                            {book.category}
