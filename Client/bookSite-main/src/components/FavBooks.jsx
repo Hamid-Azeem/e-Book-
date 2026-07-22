@@ -72,11 +72,13 @@ const FavBooks = () => {
             </div>
           </div>
           
-          <Link to="/shop" className='inline-block mt-4'>
-            <button className='bg-blue-600 text-white font-medium px-8 py-3.5 rounded-full shadow-sm hover:shadow-md hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300'>
-              Explore More
-            </button>
-          </Link>
+          <div className='flex justify-center md:justify-start w-full'>
+            <Link to="/shop" className='inline-block mt-4'>
+              <button className='bg-blue-600 text-white font-medium px-8 py-3.5 rounded-full shadow-sm hover:shadow-md hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300'>
+                Explore More
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

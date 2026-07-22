@@ -53,31 +53,56 @@ const BannerCard = () => {
     return () => ctx.revert();
   }, []);
 
-  const handleMouseEnter = (index) => {
-    gsap.to(cardsRef.current[index], {
-      y: "-15%",
-      scale: 1.1,
-      rotation: 0,
-      zIndex: 50,
-      duration: 0.4,
-      ease: "power2.out",
+  const handleMouseEnter = (hoveredIndex) => {
+    cardsRef.current.forEach((card, i) => {
+      if (i === hoveredIndex) {
+        // The hovered card pops out dramatically and straightens
+        gsap.to(card, {
+          y: "-30%",
+          x: xOffsets[i],
+          scale: 1.25,
+          rotation: 0,
+          zIndex: 50,
+          duration: 0.5,
+          ease: "back.out(1.5)",
+        });
+      } else {
+        // Other cards push away dynamically to create space
+        const pushDirection = i < hoveredIndex ? -15 : 15;
+        const pushRotation = i < hoveredIndex ? -5 : 5;
+        
+        gsap.to(card, {
+          y: "10%",
+          x: `calc(${xOffsets[i]} + ${pushDirection}%)`,
+          scale: 0.95,
+          rotation: angles[i] + pushRotation,
+          zIndex: i < hoveredIndex ? i : 10 - i, // Tuck them neatly behind
+          duration: 0.5,
+          ease: "power3.out",
+        });
+      }
     });
   };
 
-  const handleMouseLeave = (index) => {
-    gsap.to(cardsRef.current[index], {
-      y: yOffsets[index],
-      scale: 1,
-      rotation: angles[index],
-      zIndex: index + 10,
-      duration: 0.4,
-      ease: "power2.out",
+  const resetCards = () => {
+    // Reset all cards back to their perfect fanned state
+    cardsRef.current.forEach((card, i) => {
+      gsap.to(card, {
+        x: xOffsets[i],
+        y: yOffsets[i],
+        scale: 1,
+        rotation: angles[i],
+        zIndex: i + 10,
+        duration: 0.6,
+        ease: "back.out(1.2)",
+      });
     });
   };
 
   return (
     <div
       ref={containerRef}
+      onMouseLeave={resetCards}
       className='relative w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] h-[260px] sm:h-[320px] md:h-[400px] flex justify-center items-center perspective-1000 mx-auto'
     >
       {bannerBooks.map((book, index) => (
@@ -85,8 +110,7 @@ const BannerCard = () => {
           key={book.id}
           ref={(el) => (cardsRef.current[index] = el)}
           onMouseEnter={() => handleMouseEnter(index)}
-          onMouseLeave={() => handleMouseLeave(index)}
-          className='absolute w-[120px] h-[180px] sm:w-[150px] sm:h-[225px] md:w-[200px] md:h-[300px] rounded-xl shadow-2xl cursor-pointer bg-white overflow-hidden border border-slate-100 transition-shadow hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
+          className='absolute w-[120px] h-[180px] sm:w-[150px] sm:h-[225px] md:w-[200px] md:h-[300px] rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] cursor-pointer bg-white overflow-hidden border border-slate-100 transition-shadow hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)]'
           style={{ zIndex: index + 10, transformOrigin: 'bottom center' }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 pointer-events-none"></div>
