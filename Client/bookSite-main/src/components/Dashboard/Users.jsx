@@ -239,6 +239,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Modal, Button, Select, Label } from 'flowbite-react';
 import { HiOutlineTrash, HiPencilAlt, HiExclamationCircle } from 'react-icons/hi';
+import { toast } from 'react-hot-toast';
 
 const Users = () => {
   const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -267,11 +268,15 @@ const Users = () => {
           setUsers(prev => prev.filter(u => u._id !== selectedUser._id));
           setShowDeleteModal(false);
           setSelectedUser(null);
+          toast.success("User deleted successfully!");
         } else {
-          alert("Failed to delete user");
+          toast.error("Failed to delete user");
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        toast.error("Error deleting user");
+      });
   };
 
   const handleEditSubmit = (e) => {
@@ -288,6 +293,11 @@ const Users = () => {
       fetchUsers(); // Refresh list to show new role
       setShowEditModal(false);
       setSelectedUser(null);
+      toast.success("User role updated successfully!");
+    })
+    .catch(err => {
+      console.error(err);
+      toast.error("Failed to update user role");
     });
   };
 

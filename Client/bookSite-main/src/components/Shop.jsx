@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination } from 'flowbite-react';
+import { toast } from 'react-hot-toast';
 import LoadingIndicator from './Loading';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import items from './Categories';
@@ -47,7 +48,7 @@ function Shop() {
       })
       .catch((error) => {
         console.error('Error fetching books:', error);
-        alert('Error loading books: ' + error.message);
+        toast.error('Error loading books: ' + error.message);
       })
       .finally(() => {
         setLoading(false);

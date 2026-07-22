@@ -165,12 +165,12 @@
 
 import React, { useState } from 'react';
 import { Button, Label, Select, TextInput, Textarea, FileInput } from 'flowbite-react';
+import { toast } from 'react-hot-toast';
 import bookCategory from '../Categories';
 
 const UploadBook = () => {
   const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [imageUploading, setImageUploading] = useState(false);
   const [imageUrlState, setImageUrlState] = useState('');
 
@@ -179,7 +179,6 @@ const UploadBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
 
     const form = e.target;
     const book = {
@@ -200,7 +199,7 @@ const UploadBook = () => {
       const data = await response.json();
 
       if (response.ok && data._id) {
-        setMessage('✅ Book uploaded successfully!');
+        toast.success('Book uploaded successfully!');
         form.reset();
         setSelectedCategory(bookCategory[0]);
         setImageUrlState('');
@@ -208,7 +207,7 @@ const UploadBook = () => {
         throw new Error(data.error || data.message || 'Unknown error. Ensure all fields (including the image) are filled.');
       }
     } catch (error) {
-      setMessage('❌ ' + error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -225,12 +224,13 @@ const UploadBook = () => {
       const data = await res.json();
       if (res.ok && data.url) {
         setImageUrlState(data.url);
+        toast.success('Cover image uploaded!');
       } else {
-        alert('Image upload failed');
+        toast.error('Image upload failed');
       }
     } catch (err) {
       console.error(err);
-      alert('Error uploading image');
+      toast.error('Error uploading image');
     } finally {
       setImageUploading(false);
     }
@@ -289,12 +289,6 @@ const UploadBook = () => {
           <Button type="submit" size="lg" isProcessing={loading} className='mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none shadow-sm shadow-blue-500/30 rounded-xl transition-all hover:-translate-y-0.5'>
             {loading ? 'Uploading...' : 'Upload Book'}
           </Button>
-
-          {message && (
-            <div className={`p-4 rounded-lg text-sm font-medium ${message.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-              {message}
-            </div>
-          )}
         </form>
       </div>
     </div>

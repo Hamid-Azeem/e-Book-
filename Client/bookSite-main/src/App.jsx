@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import NavBar from './components/NavBar';
 import MyFooter from './components/MyFooter';
 import ScrollTop from './components/ScrollTop';
@@ -13,6 +14,7 @@ function App() {
         <Outlet />
       </div>
       <MyFooter />
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 }

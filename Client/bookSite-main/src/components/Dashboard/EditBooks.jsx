@@ -159,6 +159,7 @@
 import React, { useState } from 'react'
 import { useLoaderData, useParams, useNavigate } from 'react-router-dom'
 import { Button, Label, Select, TextInput, Textarea } from 'flowbite-react';
+import { toast } from 'react-hot-toast';
 import bookCategory from '../Categories';
 
 const EditBooks = () => {
@@ -168,7 +169,6 @@ const EditBooks = () => {
   const bookData = useLoaderData();
   
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(bookData.category);
   const [imageUploading, setImageUploading] = useState(false);
   const [imageUrlState, setImageUrlState] = useState(bookData.imageUrl || '');
@@ -176,7 +176,6 @@ const EditBooks = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
 
     const form = e.target;
     const book = {
@@ -196,13 +195,13 @@ const EditBooks = () => {
       });
 
       if (response.ok) {
-        setMessage('✅ Book updated successfully!');
+        toast.success('Book updated successfully!');
         setTimeout(() => navigate('/admin/dashboard/manage'), 1500);
       } else {
         throw new Error('Failed to update book');
       }
     } catch (error) {
-      setMessage('❌ ' + error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -244,12 +243,13 @@ const EditBooks = () => {
                       const data = await res.json();
                       if (res.ok && data.url) {
                         setImageUrlState(data.url);
+                        toast.success('Cover image uploaded!');
                       } else {
-                        alert('Image upload failed');
+                        toast.error('Image upload failed');
                       }
                     } catch (err) {
                       console.error(err);
-                      alert('Error uploading image');
+                      toast.error('Error uploading image');
                     } finally {
                       setImageUploading(false);
                     }
@@ -280,12 +280,6 @@ const EditBooks = () => {
              <Button type="submit" isProcessing={loading} className='flex-1'>Update Book</Button>
              <Button color="gray" onClick={() => navigate(-1)}>Cancel</Button>
           </div>
-
-          {message && (
-            <div className={`p-4 rounded-lg text-sm font-medium ${message.includes('✅') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-              {message}
-            </div>
-          )}
         </form>
       </div>
     </div>

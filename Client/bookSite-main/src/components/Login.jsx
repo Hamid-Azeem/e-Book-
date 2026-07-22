@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { toast } from 'react-hot-toast';
+
 const Login = () => {
 	const api=import.meta.env.VITE_API_URL;
 
@@ -39,7 +41,7 @@ const Login = () => {
 			if (!response.ok) {
 				const errorData = await response.text();
 				console.error('Response error:', response.status, errorData);
-				alert(`Login failed: ${response.status}`);
+				toast.error(`Login failed: ${response.status}`);
 				return;
 			}
 
@@ -57,16 +59,17 @@ const Login = () => {
 						role:data.role
 					}
 				})){
+					toast.success("Welcome back!");
 					navigate("/admin/dashboard");
 				}else {
-					alert("Failed to sign in");
+					toast.error("Failed to sign in");
 				}
 			} else {
-				alert(data.message || "Login failed");
+				toast.error(data.message || "Login failed");
 			}
 		} catch (error) {
 			console.error('Fetch error:', error);
-			alert("Error: " + error.message);
+			toast.error("Error: " + error.message);
 		}
 
 	}
