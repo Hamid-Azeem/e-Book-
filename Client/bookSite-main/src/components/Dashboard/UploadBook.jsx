@@ -205,7 +205,7 @@ const UploadBook = () => {
         setSelectedCategory(bookCategory[0]);
         setImageUrlState('');
       } else {
-        throw new Error(data.message || 'Unknown error');
+        throw new Error(data.error || data.message || 'Unknown error. Ensure all fields (including the image) are filled.');
       }
     } catch (error) {
       setMessage('❌ ' + error.message);
@@ -238,12 +238,12 @@ const UploadBook = () => {
 
   return (
     <div className='max-w-4xl mx-auto'>
-      <div className='mb-8'>
-        <h2 className='text-3xl font-bold text-gray-900'>Upload A Book</h2>
-        <p className='text-gray-500 mt-1'>Fill in the details below to add a new book to the inventory.</p>
+      <div className='mb-10'>
+        <h2 className='text-3xl font-black text-slate-800 tracking-tight'>Upload A Book</h2>
+        <p className='text-slate-500 mt-2 font-medium'>Fill in the details below to add a new book to the inventory.</p>
       </div>
 
-      <div className='bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:p-8'>
+      <div className='bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-10'>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
             <div>
@@ -286,7 +286,7 @@ const UploadBook = () => {
             <TextInput id="bookPdfUrl" name='bookPdfUrl' type="url" placeholder="https://..." required />
           </div>
 
-          <Button type="submit" size="lg" isProcessing={loading} className='mt-4'>
+          <Button type="submit" size="lg" isProcessing={loading} className='mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none shadow-sm shadow-blue-500/30 rounded-xl transition-all hover:-translate-y-0.5'>
             {loading ? 'Uploading...' : 'Upload Book'}
           </Button>
 

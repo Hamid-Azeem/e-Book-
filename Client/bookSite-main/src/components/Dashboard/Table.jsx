@@ -271,18 +271,18 @@ const Table = () => {
     ],
     muiTablePaperProps: {
         elevation: 0,
-        style: { border: '1px solid #e5e7eb', borderRadius: '0.75rem' }
+        style: { border: '1px solid #f1f5f9', borderRadius: '1rem', overflow: 'hidden', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' }
     }
   });
 
   return (
     <div className='max-w-7xl mx-auto'>
-      <div className='flex flex-col sm:flex-row justify-between items-center mb-6 gap-4'>
+      <div className='flex flex-col sm:flex-row justify-between items-center mb-10 gap-4'>
          <div>
-            <h2 className='text-3xl font-bold text-gray-900'>Manage Books</h2>
-            <p className='text-gray-500 mt-1'>View and manage your book inventory</p>
+            <h2 className='text-3xl font-black text-slate-800 tracking-tight'>Manage Books</h2>
+            <p className='text-slate-500 mt-2 font-medium'>View and manage your entire book inventory.</p>
          </div>
-         <MuiButton variant="outlined" startIcon={<Refresh />} onClick={fetchBooks} disabled={loading}>
+         <MuiButton variant="contained" startIcon={<Refresh />} onClick={fetchBooks} disabled={loading} style={{borderRadius: '9999px', textTransform: 'none', fontWeight: 'bold', boxShadow: 'none'}} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
            {loading ? 'Refreshing...' : 'Refresh List'}
          </MuiButton>
       </div>

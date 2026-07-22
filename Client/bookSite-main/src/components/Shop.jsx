@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination } from 'flowbite-react';
 import LoadingIndicator from './Loading';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import items from './Categories';
+import { bannerBooks } from '../data/bannerBooks';
 
 function Shop() {
   const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -37,11 +38,12 @@ function Shop() {
         return res.json();
       })
       .then((data) => {
-        console.log('Books fetched:', data.length);
-        setBooks(data);
+        const combinedBooks = [...data, ...bannerBooks];
+        console.log('Books fetched:', combinedBooks.length);
+        setBooks(combinedBooks);
         setSearchBook(query || '');
         setSelectedItem(category || '');
-        setoriginalBooks(data);
+        setoriginalBooks(combinedBooks);
       })
       .catch((error) => {
         console.error('Error fetching books:', error);
@@ -65,7 +67,8 @@ function Shop() {
         return res.json();
       })
       .then((data) => {
-        let res = data.filter(
+        const combinedBooks = [...data, ...bannerBooks];
+        let res = combinedBooks.filter(
           (item) => {
             if (selectedItem) {
               if (item.category === selectedItem)

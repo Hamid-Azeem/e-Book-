@@ -293,12 +293,12 @@ const Users = () => {
 
   return (
     <div className='max-w-6xl mx-auto'>
-       <div className='mb-6'>
-        <h2 className='text-3xl font-bold text-gray-900'>User Management</h2>
-        <p className='text-gray-500'>Manage registered users and their permissions.</p>
+       <div className='mb-10'>
+        <h2 className='text-3xl font-black text-slate-800 tracking-tight'>User Management</h2>
+        <p className='text-slate-500 mt-2 font-medium'>Manage registered users and their permissions.</p>
        </div>
 
-      <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-100">
+      <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-1">
         <Table hoverable>
           <Table.Head>
             <Table.HeadCell>#</Table.HeadCell>
@@ -309,20 +309,20 @@ const Users = () => {
           </Table.Head>
           <Table.Body className="divide-y">
             {[...users].reverse().map((user, index) => (
-              <Table.Row key={user._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell className="font-medium text-gray-900">{index + 1}</Table.Cell>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
+              <Table.Row key={user._id} className="bg-white hover:bg-slate-50 transition-colors">
+                <Table.Cell className="font-semibold text-slate-800">{index + 1}</Table.Cell>
+                <Table.Cell className="font-medium text-slate-700">{user.name}</Table.Cell>
+                <Table.Cell className="text-slate-500">{user.email}</Table.Cell>
                 <Table.Cell>
-                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                   <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-purple-50 text-purple-600' : 'bg-blue-50 text-blue-600'}`}>
                       {user.role || 'User'}
                    </span>
                 </Table.Cell>
                 <Table.Cell className="flex gap-2">
-                  <Button size="xs" color="light" onClick={() => { setSelectedUser(user); setShowEditModal(true); }}>
+                  <Button size="xs" color="light" className="hover:bg-slate-100" onClick={() => { setSelectedUser(user); setShowEditModal(true); }}>
                     <HiPencilAlt className="mr-1 h-4 w-4" /> Edit
                   </Button>
-                  <Button size="xs" color="failure" onClick={() => { setSelectedUser(user); setShowDeleteModal(true); }}>
+                  <Button size="xs" color="failure" className="bg-red-50 text-red-600 hover:bg-red-100 border-none" onClick={() => { setSelectedUser(user); setShowDeleteModal(true); }}>
                     <HiOutlineTrash className="mr-1 h-4 w-4" /> Delete
                   </Button>
                 </Table.Cell>

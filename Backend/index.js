@@ -11,6 +11,7 @@ const fs = require('fs');
 // multer for handling multipart/form-data (file uploads)
 const multer = require('multer');
 // bcrypt for password hashing
+const helmet = require('helmet');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 // Cloudinary for remote image hosting (optional)
@@ -31,8 +32,12 @@ mongoose.connect(process.env.DATABASE).then(()=>{
     console.error("MongoDB connection error:", err.message);
 });
 
+const compression = require('compression');
+
 //middleware
-app.use(cors());
+app.use(compression());
+app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -205,10 +210,10 @@ app.get("/books", async (req, res) => {
   try {
     if (req.query?.category) {
       const category = req.query.category;
-      const books = await Book.find({ category: category });
+      const books = await Book.find({ category: category }).lean();
       res.json(books);
     } else {
-      const books = await Book.find();
+      const books = await Book.find().lean();
       res.json(books);
     }
   } catch (error) {
@@ -219,9 +224,21 @@ app.get("/books", async (req, res) => {
 
 
 app.get("/books/:id", async (req, res) => {
-  const id=req.params.id;
-  const result=await Book.findById(id);
-  res.send(result);
+  try {
+    const id = req.params.id;
+    // Check if it's a valid MongoDB ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: 'Invalid book ID format' });
+    }
+    const result = await Book.findById(id).lean();
+    if (!result) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+    res.send(result);
+  } catch (error) {
+    console.error('Error fetching single book:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 
@@ -487,7 +504,7 @@ const User=mongoose.model("User",UserSchema);
   // Get all admins endpoint
   app.get('/admins', async (req, res) => {
     try {
-      const admins = await Admin.find().select('-password');
+      const admins = await Admin.find().select('-password').lean();
       res.json(admins);
     } catch (error) {
       console.error('Error fetching admins:', error);
@@ -567,7 +584,7 @@ const User=mongoose.model("User",UserSchema);
 
  app.get("/getuser",async (req,res)=>{
     try {
-      const users = await User.find().sort({ createdAt: -1 });
+      const users = await User.find().sort({ createdAt: -1 }).lean();
       res.json(users);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -699,11 +716,55 @@ const User=mongoose.model("User",UserSchema);
   // Endpoint to get featured/top selling books
   app.get('/featured-books', async (req, res) => {
     try {
-      const books = await Book.find({ isFeatured: true }).sort({ sales: -1 }).limit(7);
+      const books = await Book.find({ isFeatured: true }).sort({ sales: -1 }).limit(7).lean();
       res.json(books);
     } catch (error) {
       console.error('Error fetching featured books:', error);
       res.status(500).json({ message: 'Error fetching featured books', error: error.message });
+    }
+  });
+
+  const { Resend } = require('resend');
+  const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder');
+
+  app.post('/contact', async (req, res) => {
+    try {
+      const { firstName, lastName, company, email, phoneNumber, message } = req.body;
+
+      if (!firstName || !lastName || !email || !message) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const adminEmail = process.env.CONTACT_TO_EMAIL;
+
+      if (!adminEmail) {
+        return res.status(500).json({ error: 'Server configuration error: CONTACT_TO_EMAIL not set' });
+      }
+
+      const { data, error } = await resend.emails.send({
+        from: 'E-Book Paradise Contact <onboarding@resend.dev>',
+        to: adminEmail,
+        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+        html: `
+          <h2>New Contact Message</h2>
+          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phoneNumber || 'N/A'}</p>
+          <p><strong>Company:</strong> ${company || 'N/A'}</p>
+          <h3>Message:</h3>
+          <p>${message}</p>
+        `
+      });
+
+      if (error) {
+        console.error('Resend Error:', error);
+        return res.status(400).json({ error: error.message });
+      }
+
+      res.status(200).json({ message: 'Email sent successfully', data });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 

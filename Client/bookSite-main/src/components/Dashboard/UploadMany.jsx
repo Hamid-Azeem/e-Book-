@@ -103,12 +103,12 @@ const UploadMany = () => {
 
   const exampleData = [
     {
-      "title": "Example Book 1",
-      "authorName": "Author One",
-      "imageUrl": "https://example.com/image1.jpg",
-      "category": "Fiction",
-      "bookDescription": "Description...",
-      "bookPdfUrl": "https://example.com/book1.pdf"
+      "title": "The Odyssey",
+      "authorName": "Homer",
+      "imageUrl": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+      "category": "Epic Poetry",
+      "bookDescription": "The epic journey of Odysseus as he attempts to return home after the Trojan War, facing mythological creatures and wrathful gods along the way.",
+      "bookPdfUrl": "https://www.planetebook.com/free-ebooks/the-odyssey.pdf"
     }
   ];
 
@@ -130,14 +130,14 @@ const UploadMany = () => {
 
   return (
     <div className='max-w-4xl mx-auto'>
-      <div className='mb-8'>
-        <h2 className='text-3xl font-bold text-gray-900'>Bulk Upload</h2>
-        <p className='text-gray-500 mt-1'>Upload multiple books at once using JSON format.</p>
+      <div className='mb-10'>
+        <h2 className='text-3xl font-black text-slate-800 tracking-tight'>Bulk Upload</h2>
+        <p className='text-slate-500 mt-2 font-medium'>Upload multiple books at once using JSON format.</p>
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
          {/* Form Section */}
-         <div className='bg-white p-6 rounded-xl shadow-sm border border-gray-100'>
+         <div className='bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lg:p-8'>
             <form onSubmit={submitJson}>
                <div className="mb-4 block">
                   <Label htmlFor="booksJson" value="Paste JSON Data" />
@@ -151,13 +151,13 @@ const UploadMany = () => {
                   onChange={(e) => setJsonData(e.target.value)} 
                   required 
                />
-               <Button className='mt-5 w-full' type="submit" color="blue">Upload Books</Button>
+               <Button className='mt-6 w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none shadow-sm shadow-blue-500/30 rounded-xl transition-all hover:-translate-y-0.5' type="submit">Upload Books</Button>
             </form>
          </div>
 
          {/* Helper Section */}
          <div className='space-y-6'>
-            <div className='bg-gray-50 p-6 rounded-xl border border-gray-200'>
+            <div className='bg-slate-50 p-6 rounded-2xl border border-slate-200'>
                <div className="flex justify-between items-center mb-3">
                   <h3 className='font-semibold text-gray-900'>Example Format</h3>
                   <button 

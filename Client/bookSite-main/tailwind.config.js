@@ -7,7 +7,10 @@ export default {
   ],
   theme: {
     extend: {
-
+      fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
+      },
     },
   },
   plugins: [require('flowbite/plugin'),

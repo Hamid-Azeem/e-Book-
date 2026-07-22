@@ -68,7 +68,8 @@ export default function FilterSideBar() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/books')
+    const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    fetch(`${api}/books`)
       .then((res) => {
         return res.json();
       })

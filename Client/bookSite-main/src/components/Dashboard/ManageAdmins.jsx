@@ -141,11 +141,14 @@ const ManageAdmins = () => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Manage Admins</h2>
-        <Button onClick={() => handleOpenModal()} color="blue" className="flex items-center gap-2">
-          <HiOutlineUserAdd /> Add Admin
+    <div className="max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-10">
+        <div>
+           <h2 className="text-3xl font-black text-slate-800 tracking-tight">Manage Admins</h2>
+           <p className='text-slate-500 mt-2 font-medium'>Control administrative access to the platform.</p>
+        </div>
+        <Button onClick={() => handleOpenModal()} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none shadow-sm shadow-blue-500/30 rounded-full px-4 transition-all hover:-translate-y-0.5">
+          <HiOutlineUserAdd className="mr-2 h-5 w-5" /> Add Admin
         </Button>
       </div>
 
@@ -162,38 +165,38 @@ const ManageAdmins = () => {
       )}
 
       {admins.length === 0 ? (
-        <div className="text-center text-gray-500 py-8">No admins found</div>
+        <div className="text-center text-slate-500 py-12 bg-white rounded-2xl shadow-sm border border-slate-100">No admins found</div>
       ) : (
-        <div className="overflow-x-auto">
-          <Table>
+        <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-1">
+          <Table hoverable>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Created</Table.HeadCell>
               <Table.HeadCell>Actions</Table.HeadCell>
             </Table.Head>
-            <Table.Body>
+            <Table.Body className="divide-y">
               {admins.map((admin) => (
-                <Table.Row key={admin._id} className="hover:bg-gray-50">
-                  <Table.Cell>{admin.name}</Table.Cell>
-                  <Table.Cell>{admin.email}</Table.Cell>
-                  <Table.Cell>{new Date(admin.createdAt).toLocaleDateString()}</Table.Cell>
+                <Table.Row key={admin._id} className="hover:bg-slate-50 transition-colors">
+                  <Table.Cell className="font-semibold text-slate-800">{admin.name}</Table.Cell>
+                  <Table.Cell className="text-slate-500">{admin.email}</Table.Cell>
+                  <Table.Cell className="text-slate-500">{new Date(admin.createdAt).toLocaleDateString()}</Table.Cell>
                   <Table.Cell className="flex gap-2">
                     <Button
                       onClick={() => handleOpenModal(admin)}
-                      size="sm"
-                      color="warning"
-                      className="flex items-center gap-1"
+                      size="xs"
+                      color="light"
+                      className="hover:bg-slate-100"
                     >
-                      <HiOutlinePencilAlt /> Edit
+                      <HiOutlinePencilAlt className="mr-1 h-4 w-4" /> Edit
                     </Button>
                     <Button
                       onClick={() => handleDelete(admin._id)}
-                      size="sm"
+                      size="xs"
                       color="failure"
-                      className="flex items-center gap-1"
+                      className="bg-red-50 text-red-600 hover:bg-red-100 border-none"
                     >
-                      <HiOutlineTrash /> Delete
+                      <HiOutlineTrash className="mr-1 h-4 w-4" /> Delete
                     </Button>
                   </Table.Cell>
                 </Table.Row>

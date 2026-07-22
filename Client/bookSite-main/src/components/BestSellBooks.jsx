@@ -1,60 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import BookCard from './BookCard';
-import book1 from '../assets/banner-books/book1.png';
-import book2 from '../assets/banner-books/book2.png';
-import book3 from '../assets/banner-books/book3.png';
-import book4 from '../assets/banner-books/book4.png';
-import book5 from '../assets/banner-books/book5.png';
+import { bannerBooks } from '../data/bannerBooks';
 
 const BestSellBooks = () => {
   const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  // Banner books with their asset images
-  const bannerBooks = [
-    {
-      _id: 'banner-1',
-      title: "Book One",
-      authorName: "Author One",
-      imageUrl: book1,
-      category: "Premium",
-      bookDescription: "Premium book from collection"
-    },
-    {
-      _id: 'banner-2',
-      title: "Book Two",
-      authorName: "Author Two",
-      imageUrl: book2,
-      category: "Premium",
-      bookDescription: "Premium book from collection"
-    },
-    {
-      _id: 'banner-3',
-      title: "Book Three",
-      authorName: "Author Three",
-      imageUrl: book3,
-      category: "Premium",
-      bookDescription: "Premium book from collection"
-    },
-    {
-      _id: 'banner-4',
-      title: "Book Four",
-      authorName: "Author Four",
-      imageUrl: book4,
-      category: "Premium",
-      bookDescription: "Premium book from collection"
-    },
-    {
-      _id: 'banner-5',
-      title: "Book Five",
-      authorName: "Author Five",
-      imageUrl: book5,
-      category: "Premium",
-      bookDescription: "Premium book from collection"
-    }
-  ];
 
   useEffect(() => {
     setLoading(true);
@@ -66,26 +17,29 @@ const BestSellBooks = () => {
       .then((data) => {
         // Combine banner books (first 5) with database books (rest)
         const allBooks = [...bannerBooks, ...data];
-        setBooks(allBooks.slice(0, 7)); // Show 5 banner + 2 from DB
-        setError('');
+        setBooks(allBooks.slice(0, 10)); // Show up to 10 books total
       })
       .catch((err) => {
         console.error('Error fetching books:', err);
-        // If DB fails, still show banner books
+        // Fallback to banner books if API fails
         setBooks(bannerBooks);
-        setError('');
       })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [api]);
 
   if (loading) {
-    return <div className='text-center py-10'>Loading best sellers...</div>;
+    return <div className='text-center py-20 text-slate-500'>Loading best sellers...</div>;
   }
 
   if (books.length === 0) {
-    return <div className='text-center py-10'>No books available</div>;
+    return (
+      <div className='text-center py-24'>
+        <h2 className='text-3xl font-semibold text-slate-800 mb-4'>Best Selling Books</h2>
+        <p className='text-slate-500'>No books available.</p>
+      </div>
+    );
   }
 
   return (
@@ -93,4 +47,4 @@ const BestSellBooks = () => {
   )
 }
 
-export default BestSellBooks
+export default BestSellBooks;

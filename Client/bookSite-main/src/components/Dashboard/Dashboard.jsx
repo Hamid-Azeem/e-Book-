@@ -56,7 +56,7 @@ const Dashboard = () => {
       <div className="flex flex-col flex-1 w-full relative">
         <AdminNav toggleMenu={toggleMenu} />
         
-        <main className="flex-1 overflow-y-auto pt-16 lg:ml-64 p-4 lg:p-6 scroll-smooth">
+        <main className="flex-1 overflow-y-auto pt-24 pb-12 px-4 lg:px-10 lg:pt-28 lg:ml-64 bg-slate-50 scroll-smooth">
           <Outlet />
         </main>
       </div>

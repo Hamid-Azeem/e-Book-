@@ -203,6 +203,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { Modal, Button } from 'flowbite-react';
 import { HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout, HiOutlineCloudUpload } from 'react-icons/hi';
+import { FaBookOpen } from 'react-icons/fa';
 
 const SideBar = ({ isMenuOpen }) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -216,7 +217,6 @@ const SideBar = ({ isMenuOpen }) => {
   }
 
   const isActive = (path) => {
-    // Check if the current path exactly matches or includes the path (for nested routes)
     if (path === '' && location.pathname === '/admin/dashboard') return true;
     if (path !== '' && location.pathname.includes(path)) return true;
     return false;
@@ -226,13 +226,13 @@ const SideBar = ({ isMenuOpen }) => {
     <li>
       <Link 
         to={to} 
-        className={`flex items-center p-3 text-base font-medium rounded-lg group transition-colors duration-200 ${
+        className={`flex items-center p-3 text-sm font-semibold rounded-xl group transition-all duration-300 ${
           isActive(to) 
-            ? 'bg-blue-100 text-blue-700' 
-            : 'text-gray-900 hover:bg-gray-100'
+            ? 'bg-blue-50 text-blue-600 shadow-sm' 
+            : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600'
         }`}
       >
-        <Icon className={`w-6 h-6 transition duration-75 ${isActive(to) ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-900'}`} />
+        <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive(to) ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600'}`} />
         <span className="ml-3">{label}</span>
       </Link>
     </li>
@@ -241,16 +241,19 @@ const SideBar = ({ isMenuOpen }) => {
   return (
     <>
       <aside 
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-4 transition-transform bg-white border-r border-gray-200 ${
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-4 transition-transform bg-white border-r border-slate-100 ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0`}
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white flex flex-col justify-between">
-          <ul className="space-y-2 mt-4">
-             <div className='px-2 mb-6'>
-                <h2 className='text-2xl font-bold text-blue-700 flex items-center gap-2'>
-                    <HiViewBoards/> AdminPanel
-                </h2>
+        <div className="h-full px-4 pb-4 overflow-y-auto bg-white flex flex-col justify-between">
+          <ul className="space-y-1.5 mt-4">
+             <div className='px-2 mb-8'>
+                <Link className='text-2xl font-black flex items-center gap-2 group' to="/">
+                  <FaBookOpen className='text-blue-600 group-hover:rotate-12 transition-transform duration-300' />
+                  <span className='font-serif text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 tracking-tight'>
+                    AdminPanel
+                  </span>
+                </Link>
              </div>
             <NavItem to="" icon={HiChartPie} label="Dashboard" />
             <NavItem to="manage" icon={HiInbox} label="Manage Books" />
@@ -260,25 +263,24 @@ const SideBar = ({ isMenuOpen }) => {
             <NavItem to="admins" icon={HiShoppingBag} label="Manage Admins" />
           </ul>
 
-          <div className="pt-4 mt-4 space-y-2 border-t border-gray-200">
+          <div className="pt-4 mt-4 space-y-2 border-t border-slate-100">
             <button 
               onClick={() => setShowLogoutModal(true)} 
-              className="flex w-full items-center p-3 text-base font-medium text-red-600 rounded-lg hover:bg-red-50 group transition-colors duration-200"
+              className="flex w-full items-center p-3 text-sm font-bold text-red-500 rounded-xl hover:bg-red-50 hover:text-red-600 group transition-all duration-300"
             >
-              <HiLogout className="w-6 h-6 text-red-500 transition duration-75 group-hover:text-red-700" />
+              <HiLogout className="w-5 h-5 transition-colors duration-300 group-hover:text-red-600" />
               <span className="ml-3">Sign Out</span>
             </button>
           </div>
         </div>
       </aside>
 
-      {/* Logout Confirmation Modal using Flowbite */}
       <Modal show={showLogoutModal} size="md" popup onClose={() => setShowLogoutModal(false)}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-            <HiLogout className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <HiLogout className="mx-auto mb-4 h-14 w-14 text-slate-400" />
+            <h3 className="mb-5 text-lg font-medium text-slate-600">
               Are you sure you want to sign out?
             </h3>
             <div className="flex justify-center gap-4">
@@ -296,4 +298,4 @@ const SideBar = ({ isMenuOpen }) => {
   )
 }
 
-export default SideBar
+export default SideBar;
